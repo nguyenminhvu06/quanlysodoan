@@ -1,0 +1,23 @@
+name: data
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: quan_ly_so_doan
+      POSTGRES_USER: sa
+      # Local development only; do not reuse this password outside localhost.
+      POSTGRES_PASSWORD: sapassword
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sa -d quan_ly_so_doan"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
